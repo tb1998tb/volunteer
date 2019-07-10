@@ -1,0 +1,15 @@
+<p>
+  account works!
+</p>
+<form>
+  <input type="text" name="password" required [(ngModel)]="user.password"/>סיסמה
+  <br/>
+  <input type="email" name="mail" required [(ngModel)]="user.mail"/>מייל
+  <br/>
+  <input type="phone" name="password" required [(ngModel)]="user.phone"/>טלפון
+  <br/>
+  <input type="text" name="name" required minlength="5" [(ngModel)]="user.name"/>שם
+  <br/>
+  <button (click)="account()">account</button>
+<!--לעשות בדיקות ולידציה על ס-->
+</form>
