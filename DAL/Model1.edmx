@@ -1,0 +1,461 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EfratBatist_RutyOstrovProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="groupVolunteery">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nameGroup" Type="nvarchar(max)" />
+          <Property Name="sum_hour_in_night" Type="int" />
+          <Property Name="sum_hour_volunteering_for_week" Type="int" />
+          <Property Name="managerId" Type="int" />
+          <Property Name="from_hour_in_night" Type="time" Precision="7" />
+          <Property Name="to_hour_in_night" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Possible_schedule_for_Volunteer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="weekDay" Type="int" />
+          <Property Name="fromHour" Type="time" Precision="7" />
+          <Property Name="toHour" Type="time" Precision="7" />
+          <Property Name="userId" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" />
+          <Property Name="mail" Type="nvarchar" MaxLength="50" />
+          <Property Name="phone" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view '!!!!!!!!!!!!!!EfratBatist_RutyOstrovProject.dbo.volunteerSchedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="volunteerSchedule">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="weekDay" Type="int" />
+          <Property Name="fromHour" Type="time" Precision="7" />
+          <Property Name="toHour" Type="time" Precision="7" />
+          <Property Name="volunteerToGroupId" Type="int" />
+          <Property Name="comment" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="volunteerTiming">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="groupVolunteerId" Type="int" />
+          <Property Name="fromHour" Type="time" Precision="7" />
+          <Property Name="toHour" Type="time" Precision="7" />
+          <Property Name="weekday" Type="int" />
+        </EntityType>
+        <EntityType Name="volunteerToGroup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUser" Type="int" />
+          <Property Name="idGroup" Type="int" />
+        </EntityType>
+        <Association Name="FK__Possible___userI__1367E606">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Possible_schedule_for_Volunteer" Type="Self.Possible_schedule_for_Volunteer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Possible_schedule_for_Volunteer">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__volunteer__group__0EA330E9">
+          <End Role="groupVolunteery" Type="Self.groupVolunteery" Multiplicity="0..1" />
+          <End Role="volunteerTiming" Type="Self.volunteerTiming" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groupVolunteery">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="volunteerTiming">
+              <PropertyRef Name="groupVolunteerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__volunteer__idGro__09DE7BCC">
+          <End Role="groupVolunteery" Type="Self.groupVolunteery" Multiplicity="0..1" />
+          <End Role="volunteerToGroup" Type="Self.volunteerToGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groupVolunteery">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="volunteerToGroup">
+              <PropertyRef Name="idGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__volunteer__idUse__08EA5793">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="volunteerToGroup" Type="Self.volunteerToGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="volunteerToGroup">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__volunteer__volun__15502E78">
+          <End Role="volunteerToGroup" Type="Self.volunteerToGroup" Multiplicity="0..1" />
+          <End Role="volunteerSchedule" Type="Self.volunteerSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="volunteerToGroup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="volunteerSchedule">
+              <PropertyRef Name="volunteerToGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EfratBatist_RutyOstrovProjectModelStoreContainer">
+          <EntitySet Name="groupVolunteery" EntityType="Self.groupVolunteery" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Possible_schedule_for_Volunteer" EntityType="Self.Possible_schedule_for_Volunteer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="volunteerTiming" EntityType="Self.volunteerTiming" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="volunteerToGroup" EntityType="Self.volunteerToGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="volunteerSchedule" EntityType="Self.volunteerSchedule" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [volunteerSchedule].[id] AS [id], 
+    [volunteerSchedule].[weekDay] AS [weekDay], 
+    [volunteerSchedule].[fromHour] AS [fromHour], 
+    [volunteerSchedule].[toHour] AS [toHour], 
+    [volunteerSchedule].[volunteerToGroupId] AS [volunteerToGroupId], 
+    [volunteerSchedule].[comment] AS [comment]
+    FROM [dbo].[volunteerSchedule] AS [volunteerSchedule]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Possible___userI__1367E606" Association="Self.FK__Possible___userI__1367E606">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Possible_schedule_for_Volunteer" EntitySet="Possible_schedule_for_Volunteer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__volunteer__group__0EA330E9" Association="Self.FK__volunteer__group__0EA330E9">
+            <End Role="groupVolunteery" EntitySet="groupVolunteery" />
+            <End Role="volunteerTiming" EntitySet="volunteerTiming" />
+          </AssociationSet>
+          <AssociationSet Name="FK__volunteer__idGro__09DE7BCC" Association="Self.FK__volunteer__idGro__09DE7BCC">
+            <End Role="groupVolunteery" EntitySet="groupVolunteery" />
+            <End Role="volunteerToGroup" EntitySet="volunteerToGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK__volunteer__idUse__08EA5793" Association="Self.FK__volunteer__idUse__08EA5793">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="volunteerToGroup" EntitySet="volunteerToGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK__volunteer__volun__15502E78" Association="Self.FK__volunteer__volun__15502E78">
+            <End Role="volunteerToGroup" EntitySet="volunteerToGroup" />
+            <End Role="volunteerSchedule" EntitySet="volunteerSchedule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EfratBatist_RutyOstrovProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="groupVolunteery">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nameGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sum_hour_in_night" Type="Int32" />
+          <Property Name="sum_hour_volunteering_for_week" Type="Int32" />
+          <Property Name="managerId" Type="Int32" />
+          <Property Name="from_hour_in_night" Type="Time" Precision="7" />
+          <Property Name="to_hour_in_night" Type="Time" Precision="7" />
+          <NavigationProperty Name="volunteerTimings" Relationship="Self.FK__volunteer__group__0EA330E9" FromRole="groupVolunteery" ToRole="volunteerTiming" />
+          <NavigationProperty Name="volunteerToGroups" Relationship="Self.FK__volunteer__idGro__09DE7BCC" FromRole="groupVolunteery" ToRole="volunteerToGroup" />
+        </EntityType>
+        <EntityType Name="Possible_schedule_for_Volunteer">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="weekDay" Type="Int32" />
+          <Property Name="fromHour" Type="Time" Precision="7" />
+          <Property Name="toHour" Type="Time" Precision="7" />
+          <Property Name="userId" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Possible___userI__1367E606" FromRole="Possible_schedule_for_Volunteer" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="mail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Possible_schedule_for_Volunteer" Relationship="Self.FK__Possible___userI__1367E606" FromRole="Users" ToRole="Possible_schedule_for_Volunteer" />
+          <NavigationProperty Name="volunteerToGroups" Relationship="Self.FK__volunteer__idUse__08EA5793" FromRole="Users" ToRole="volunteerToGroup" />
+        </EntityType>
+        <EntityType Name="volunteerTiming">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="groupVolunteerId" Type="Int32" />
+          <Property Name="fromHour" Type="Time" Precision="7" />
+          <Property Name="toHour" Type="Time" Precision="7" />
+          <Property Name="weekday" Type="Int32" />
+          <NavigationProperty Name="groupVolunteery" Relationship="Self.FK__volunteer__group__0EA330E9" FromRole="volunteerTiming" ToRole="groupVolunteery" />
+        </EntityType>
+        <EntityType Name="volunteerToGroup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUser" Type="Int32" />
+          <Property Name="idGroup" Type="Int32" />
+          <NavigationProperty Name="groupVolunteery" Relationship="Self.FK__volunteer__idGro__09DE7BCC" FromRole="volunteerToGroup" ToRole="groupVolunteery" />
+          <NavigationProperty Name="User" Relationship="Self.FK__volunteer__idUse__08EA5793" FromRole="volunteerToGroup" ToRole="Users" />
+          <NavigationProperty Name="volunteerSchedules" Relationship="Self.FK__volunteer__volun__15502E78" FromRole="volunteerToGroup" ToRole="volunteerSchedule" />
+        </EntityType>
+        <EntityType Name="volunteerSchedule">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="weekDay" Type="Int32" />
+          <Property Name="fromHour" Type="Time" Precision="7" />
+          <Property Name="toHour" Type="Time" Precision="7" />
+          <Property Name="volunteerToGroupId" Type="Int32" />
+          <Property Name="comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="volunteerToGroup" Relationship="Self.FK__volunteer__volun__15502E78" FromRole="volunteerSchedule" ToRole="volunteerToGroup" />
+        </EntityType>
+        <Association Name="FK__volunteer__group__0EA330E9">
+          <End Role="groupVolunteery" Type="Self.groupVolunteery" Multiplicity="0..1" />
+          <End Role="volunteerTiming" Type="Self.volunteerTiming" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groupVolunteery">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="volunteerTiming">
+              <PropertyRef Name="groupVolunteerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__volunteer__idGro__09DE7BCC">
+          <End Role="groupVolunteery" Type="Self.groupVolunteery" Multiplicity="0..1" />
+          <End Role="volunteerToGroup" Type="Self.volunteerToGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="groupVolunteery">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="volunteerToGroup">
+              <PropertyRef Name="idGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Possible___userI__1367E606">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Possible_schedule_for_Volunteer" Type="Self.Possible_schedule_for_Volunteer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Possible_schedule_for_Volunteer">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__volunteer__idUse__08EA5793">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="volunteerToGroup" Type="Self.volunteerToGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="volunteerToGroup">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__volunteer__volun__15502E78">
+          <End Role="volunteerToGroup" Type="Self.volunteerToGroup" Multiplicity="0..1" />
+          <End Role="volunteerSchedule" Type="Self.volunteerSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="volunteerToGroup">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="volunteerSchedule">
+              <PropertyRef Name="volunteerToGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="groupVolunteeries" EntityType="Self.groupVolunteery" />
+          <EntitySet Name="Possible_schedule_for_Volunteer" EntityType="Self.Possible_schedule_for_Volunteer" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="volunteerTimings" EntityType="Self.volunteerTiming" />
+          <EntitySet Name="volunteerToGroups" EntityType="Self.volunteerToGroup" />
+          <EntitySet Name="volunteerSchedules" EntityType="Self.volunteerSchedule" />
+          <AssociationSet Name="FK__volunteer__group__0EA330E9" Association="Self.FK__volunteer__group__0EA330E9">
+            <End Role="groupVolunteery" EntitySet="groupVolunteeries" />
+            <End Role="volunteerTiming" EntitySet="volunteerTimings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__volunteer__idGro__09DE7BCC" Association="Self.FK__volunteer__idGro__09DE7BCC">
+            <End Role="groupVolunteery" EntitySet="groupVolunteeries" />
+            <End Role="volunteerToGroup" EntitySet="volunteerToGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Possible___userI__1367E606" Association="Self.FK__Possible___userI__1367E606">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Possible_schedule_for_Volunteer" EntitySet="Possible_schedule_for_Volunteer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__volunteer__idUse__08EA5793" Association="Self.FK__volunteer__idUse__08EA5793">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="volunteerToGroup" EntitySet="volunteerToGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK__volunteer__volun__15502E78" Association="Self.FK__volunteer__volun__15502E78">
+            <End Role="volunteerToGroup" EntitySet="volunteerToGroups" />
+            <End Role="volunteerSchedule" EntitySet="volunteerSchedules" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EfratBatist_RutyOstrovProjectModelStoreContainer" CdmEntityContainer="Entities2">
+          <EntitySetMapping Name="groupVolunteeries">
+            <EntityTypeMapping TypeName="EfratBatist_RutyOstrovProjectModel.groupVolunteery">
+              <MappingFragment StoreEntitySet="groupVolunteery">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nameGroup" ColumnName="nameGroup" />
+                <ScalarProperty Name="sum_hour_in_night" ColumnName="sum_hour_in_night" />
+                <ScalarProperty Name="sum_hour_volunteering_for_week" ColumnName="sum_hour_volunteering_for_week" />
+                <ScalarProperty Name="managerId" ColumnName="managerId" />
+                <ScalarProperty Name="from_hour_in_night" ColumnName="from_hour_in_night" />
+                <ScalarProperty Name="to_hour_in_night" ColumnName="to_hour_in_night" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Possible_schedule_for_Volunteer">
+            <EntityTypeMapping TypeName="EfratBatist_RutyOstrovProjectModel.Possible_schedule_for_Volunteer">
+              <MappingFragment StoreEntitySet="Possible_schedule_for_Volunteer">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="weekDay" ColumnName="weekDay" />
+                <ScalarProperty Name="fromHour" ColumnName="fromHour" />
+                <ScalarProperty Name="toHour" ColumnName="toHour" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="EfratBatist_RutyOstrovProjectModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="EfratBatist_RutyOstrovProjectModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="mail" ColumnName="mail" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="volunteerTimings">
+            <EntityTypeMapping TypeName="EfratBatist_RutyOstrovProjectModel.volunteerTiming">
+              <MappingFragment StoreEntitySet="volunteerTiming">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="groupVolunteerId" ColumnName="groupVolunteerId" />
+                <ScalarProperty Name="fromHour" ColumnName="fromHour" />
+                <ScalarProperty Name="toHour" ColumnName="toHour" />
+                <ScalarProperty Name="weekday" ColumnName="weekday" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="volunteerToGroups">
+            <EntityTypeMapping TypeName="EfratBatist_RutyOstrovProjectModel.volunteerToGroup">
+              <MappingFragment StoreEntitySet="volunteerToGroup">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="idGroup" ColumnName="idGroup" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="volunteerSchedules">
+            <EntityTypeMapping TypeName="EfratBatist_RutyOstrovProjectModel.volunteerSchedule">
+              <MappingFragment StoreEntitySet="volunteerSchedule">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="weekDay" ColumnName="weekDay" />
+                <ScalarProperty Name="fromHour" ColumnName="fromHour" />
+                <ScalarProperty Name="toHour" ColumnName="toHour" />
+                <ScalarProperty Name="volunteerToGroupId" ColumnName="volunteerToGroupId" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

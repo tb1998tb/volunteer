@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d6f6d4c1e2c647aaa504a85b2223affd" Name="Diagram1">
+        <EntityTypeShape EntityType="EfratBatist_RutyOstrovProjectModel.groupVolunteery" Width="1.5" PointX="4.625" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EfratBatist_RutyOstrovProjectModel.Possible_schedule_for_Volunteer" Width="1.5" PointX="3.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EfratBatist_RutyOstrovProjectModel.sysdiagram" Width="1.5" PointX="13.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EfratBatist_RutyOstrovProjectModel.User" Width="1.5" PointX="9" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EfratBatist_RutyOstrovProjectModel.volunteerTiming" Width="1.5" PointX="4.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EfratBatist_RutyOstrovProjectModel.volunteerToGroup" Width="1.5" PointX="8.25" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EfratBatist_RutyOstrovProjectModel.volunteerSchedule" Width="1.5" PointX="11" PointY="2.5" IsExpanded="true" />
+        <AssociationConnector Association="EfratBatist_RutyOstrovProjectModel.FK__volunteer__group__0EA330E9" ManuallyRouted="false" />
+        <AssociationConnector Association="EfratBatist_RutyOstrovProjectModel.FK__volunteer__idGro__09DE7BCC" ManuallyRouted="false" />
+        <AssociationConnector Association="EfratBatist_RutyOstrovProjectModel.FK__Possible___userI__1367E606" ManuallyRouted="false" />
+        <AssociationConnector Association="EfratBatist_RutyOstrovProjectModel.FK__volunteer__idUse__08EA5793" ManuallyRouted="false" />
+        <AssociationConnector Association="EfratBatist_RutyOstrovProjectModel.FK__volunteer__volun__15502E78" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
